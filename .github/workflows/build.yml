@@ -1,14 +1,15 @@
+
 name: Build ImmortalWrt N60
 
 on:
-  workflow_dispatch: # 允许手动点击按钮开始编译
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Initialization environment
         run: |
@@ -22,7 +23,6 @@ jobs:
 
       - name: Generate Configuration
         run: |
-          # 写入 N60 的核心配置
           echo "CONFIG_TARGET_mediatek=y" > .config
           echo "CONFIG_TARGET_mediatek_mt7986=y" >> .config
           echo "CONFIG_TARGET_mediatek_mt7986_DEVICE_netcore_n60=y" >> .config
@@ -40,7 +40,7 @@ jobs:
         run: make -j$(nproc) || make -j1 V=s
 
       - name: Upload firmware
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ImmortalWrt_N60_bin
           path: bin/targets/mediatek/mt7986/*.bin
